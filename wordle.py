@@ -48,7 +48,12 @@ def main():
 
     dictionaryList = readSysWord("/usr/share/dict/words")
 
-    knownSpotsT, knownSpotsF, knownLetters, notPresent = ["2a","4e","5l","3b"], ["1b"], ["b"], ["r","i","t","s","d","g","z","c","m","n"]
+    #for knownSpotsT, put number and letter for letters you know
+    #for knownSpotsF, put number and leter of letter you know isn't there
+    #for knownLetters, put letters you know are there
+    #for not present, put letters that aren't there
+
+    knownSpotsT, knownSpotsF, knownLetters, notPresent = ["5t"], ["3t","1s","2i","3s"], ["t","s","i"], ["l","a","e","r", "g","h","v"]
 
     possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
 
