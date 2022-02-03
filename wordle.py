@@ -18,6 +18,26 @@ def readSysWord(systemFile):
 
     return dictionaryList
 
+def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
+    for i in range(0,5,1):
+        letter = result[2*i+1]
+        if result[2*i] == "f":
+            if letter not in notPresent:
+                notPresent.append(letter)
+        elif result[2*i] == "y":
+            if letter not in knownLetters:
+                knownLetters.append(letter)
+            knownSpotsF.append(f"{i+1}{letter}")
+        elif result[2*i] == "g":
+            if letter not in knownLetters:
+                knownLetters.append(letter)
+            knownSpotsT.append(f"{i+1}{letter}")
+        else:
+            print("Error in input, please restart")
+            return
+
+    return
+
 def findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList):
     possibleWords = []
 
@@ -44,6 +64,21 @@ def findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictio
 
     return possibleWords
 
+def countLetters(dictionaryList, alphabet):
+    countList = []
+
+    for letter in alphabet:
+        countList.append(0)
+
+    for word in dictionaryList:
+         for letter in word:
+             if letter in alphabet:
+                 index = alphabet.index(letter)
+                 countList[index] += 1
+
+    for i in range(len(alphabet)):
+        print(f"{alphabet[i]}: {countList[i]}")
+
 def main():
 
     dictionaryList = readSysWord("/usr/share/dict/words")
@@ -53,10 +88,28 @@ def main():
     #for knownLetters, put letters you know are there
     #for not present, put letters that aren't there
 
-    knownSpotsT, knownSpotsF, knownLetters, notPresent = ["5t"], ["3t","1s","2i","3s"], ["t","s","i"], ["l","a","e","r", "g","h","v"]
+    knownSpotsT, knownSpotsF, knownLetters, notPresent = [], [], [], []
 
-    possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
+    while True:
+        print("\nInstructions: enter given information with designation first followed by letter")
+        print("f for grey, y for yellow, g for green")
+        while True:
+            result = input("\nPlease enter result: ")
+            if len(result) == 10 and result.isalpha():
+                break
+            else:
+                print("Sorry there was an error")
 
-    print(possibleWords)
+        parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent)
+        print("\nData in case the code crashes:")
+        print(knownSpotsT, knownSpotsF, knownLetters, notPresent)
+
+        possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
+        print(f"\nPossible words:\n{possibleWords}")
+
+        wait = input("\nPress enter to continue")
+
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    countLetters(dictionaryList, alphabet)
 
 main()
