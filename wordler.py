@@ -22,6 +22,24 @@ def readSysWord(systemFile):
 
     return dictionaryList
 
+def getResult():
+    while True:
+        VALID = True
+        result = input("\nPlease enter result: ").lower()
+        if len(result) == 10 and result.isalpha():
+            for i in range(0,5,1):
+                if result[2*i] not in ["f","y","g"]:
+                    VALID = False
+        else:
+            VALID = False
+
+        if not VALID:
+            print("Sorry there was an error")
+        if VALID:
+            break
+
+    return result
+
 def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
     for i in range(0,5,1):
         letter = result[2*i+1]
@@ -37,8 +55,8 @@ def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
                 knownLetters.append(letter)
             knownSpotsT.append(f"{i+1}{letter}")
         else:
-            print("Error in input, please restart")
-            return
+            print("ERROR, please restart")
+            quit()
 
     return
 
@@ -99,14 +117,10 @@ def main():
     while True:
         print("\nInstructions: enter given information with designation first followed by letter")
         print("f for grey, y for yellow, g for green")
-        while True:
-            result = input("\nPlease enter result: ")
-            if len(result) == 10 and result.isalpha():
-                break
-            else:
-                print("Sorry there was an error")
 
+        result = getResult()
         parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent)
+
         print("\nData in case the code crashes:")
         print(knownSpotsT, knownSpotsF, knownLetters, notPresent)
 
@@ -118,7 +132,7 @@ def main():
         if len(wordlist_sorted) != 0:
             possibleWords = wordlist_sorted
 
-        print(f"\nPossible words:\n{possibleWords}")
+        print(f"\nPossible words:\n{possibleWords[:10]}")
 
         wait = input("\nPress enter to continue")
 
