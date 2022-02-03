@@ -113,13 +113,16 @@ def main():
         possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
 
         freqs = nltk.FreqDist([w.lower() for w in nltk.corpus.brown.words()])
-
         wordlist_sorted = sorted(possibleWords, key=lambda x: freqs[x.lower()], reverse=True)
-        print(f"\nPossible words:\n{wordlist_sorted}")
+
+        if len(wordlist_sorted) != 0:
+            possibleWords = wordlist_sorted
+
+        print(f"\nPossible words:\n{possibleWords}")
 
         wait = input("\nPress enter to continue")
 
-    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    countLetters(dictionaryList, alphabet)
+    # alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    # countLetters(dictionaryList, alphabet)
 
 main()
