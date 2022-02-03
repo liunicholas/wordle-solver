@@ -104,8 +104,7 @@ def countLetters(dictionaryList, alphabet):
 def main():
 
     # dictionaryList = readSysWord("/usr/share/dict/words")
-    # dictionaryList = allWordleWords
-    dictionaryList = lewdleWords
+    dictionaryList = allWordleWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
@@ -125,14 +124,13 @@ def main():
         print(knownSpotsT, knownSpotsF, knownLetters, notPresent)
 
         possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
+        print(f"\nPossible words:\n{possibleWords}")
 
         freqs = nltk.FreqDist([w.lower() for w in nltk.corpus.brown.words()])
         wordlist_sorted = sorted(possibleWords, key=lambda x: freqs[x.lower()], reverse=True)
 
-        if len(wordlist_sorted) != 0:
-            possibleWords = wordlist_sorted
+        print(f"\nPossible words sorted by popularity:\n{wordlist_sorted[:10]}")
 
-        print(f"\nPossible words:\n{possibleWords[:10]}")
 
         wait = input("\nPress enter to continue")
 
