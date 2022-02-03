@@ -1,4 +1,5 @@
 import nltk.corpus
+from allWords import allWordleWords
 
 def readSysWord(systemFile):
     '''
@@ -83,7 +84,8 @@ def countLetters(dictionaryList, alphabet):
 
 def main():
 
-    dictionaryList = readSysWord("/usr/share/dict/words")
+    # dictionaryList = readSysWord("/usr/share/dict/words")
+    dictionaryList = allWordleWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
