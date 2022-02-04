@@ -57,7 +57,7 @@ def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
                 knownLetters.append(letter)
             knownSpotsT.append(f"{i+1}{letter}")
         elif result[2*i] == "f":
-            if letter not in notPresent and letter not in knownLetters and letter not in word:
+            if letter not in notPresent and letter not in knownLetters and letter not in word[:i] and letter not in word[i+1:]:
                 notPresent.append(letter)
         else:
             print("ERROR, please restart")
