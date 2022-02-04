@@ -41,12 +41,14 @@ def getResult():
     return result
 
 def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
+    word = ""
     for i in range(0,5,1):
         letter = result[2*i+1]
-        if result[2*i] == "f":
-            if letter not in notPresent:
-                notPresent.append(letter)
-        elif result[2*i] == "y":
+        word+=letter
+
+    for i in range(0,5,1):
+        letter = word[i]
+        if result[2*i] == "y":
             if letter not in knownLetters:
                 knownLetters.append(letter)
             knownSpotsF.append(f"{i+1}{letter}")
@@ -54,6 +56,9 @@ def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
             if letter not in knownLetters:
                 knownLetters.append(letter)
             knownSpotsT.append(f"{i+1}{letter}")
+        elif result[2*i] == "f":
+            if letter not in notPresent and letter not in knownLetters and letter not in word:
+                notPresent.append(letter)
         else:
             print("ERROR, please restart")
             quit()
@@ -105,6 +110,7 @@ def main():
 
     # dictionaryList = readSysWord("/usr/share/dict/words")
     dictionaryList = allWordleWords
+    # dictionaryList = lewdleWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
