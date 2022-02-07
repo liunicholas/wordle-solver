@@ -121,6 +121,7 @@ def main():
 
     while True:
         print("\nInstructions: enter given information with designation first followed by letter")
+        print("Enter 'stern' for your first word, and 'yclad' for the second")
         print("f for grey, y for yellow, g for green")
 
         result = getResult()
