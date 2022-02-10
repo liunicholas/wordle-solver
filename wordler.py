@@ -1,5 +1,5 @@
 import nltk.corpus
-from allWords import allWordleWords
+from allWords import allWordleWords, falseWords
 
 def readSysWord(systemFile):
     '''
