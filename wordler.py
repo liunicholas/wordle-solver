@@ -1,6 +1,5 @@
 import nltk.corpus
 from allWords import allWordleWords
-from lewdlewords import lewdleWords
 
 def readSysWord(systemFile):
     '''
@@ -57,8 +56,16 @@ def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
                 knownLetters.append(letter)
             knownSpotsT.append(f"{i+1}{letter}")
         elif result[2*i] == "f":
-            if letter not in notPresent and letter not in knownLetters and letter not in word[:i] and letter not in word[i+1:]:
-                notPresent.append(letter)
+            # if letter not in notPresent and letter not in knownLetters and letter not in word[:i] and letter not in word[i+1:]:
+            if letter not in notPresent and letter not in knownLetters:
+                NOTPRESENT = True
+                for i in range(len(word)):
+                    if word[i] == letter:
+                        if result[2*i] == "y" or result[2*i] == "g":
+                            NOTPRESENT = False
+                            break
+                if NOTPRESENT:
+                    notPresent.append(letter)
         else:
             print("ERROR, please restart")
             quit()
@@ -109,8 +116,7 @@ def countLetters(dictionaryList, alphabet):
 def main():
 
     # dictionaryList = readSysWord("/usr/share/dict/words")
-    dictionaryList = allWordleWords
-    # dictionaryList = lewdleWords
+    dictionaryList = allWordleWords + falseWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
