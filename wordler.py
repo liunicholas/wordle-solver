@@ -1,6 +1,8 @@
 import nltk.corpus
 from allWords import allWordleWords, falseWords
 
+numLetters = 8
+
 def readSysWord(systemFile):
     '''
     Description: reads in the system dictionary
@@ -14,7 +16,7 @@ def readSysWord(systemFile):
     for word in sFile:
         indWord = word.strip()
         #makes sure the word has only characters that are letters
-        if indWord.isalpha() and len(indWord) == 5:
+        if indWord.isalpha() and len(indWord) == numLetters:
             dictionaryList.append(indWord.lower())
 
     sFile.close()
@@ -25,8 +27,8 @@ def getResult():
     while True:
         VALID = True
         result = input("\nPlease enter result: ").lower()
-        if len(result) == 10 and result.isalpha():
-            for i in range(0,5,1):
+        if len(result) == numLetters*2 and result.isalpha():
+            for i in range(0,numLetters,1):
                 if result[2*i] not in ["f","y","g"]:
                     VALID = False
         else:
@@ -41,11 +43,11 @@ def getResult():
 
 def parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent):
     word = ""
-    for i in range(0,5,1):
+    for i in range(0,numLetters,1):
         letter = result[2*i+1]
         word+=letter
 
-    for i in range(0,5,1):
+    for i in range(0,numLetters,1):
         letter = word[i]
         if result[2*i] == "y":
             if letter not in knownLetters:
@@ -115,8 +117,8 @@ def countLetters(dictionaryList, alphabet):
 
 def main():
 
-    # dictionaryList = readSysWord("/usr/share/dict/words")
-    dictionaryList = allWordleWords + falseWords
+    dictionaryList = readSysWord("/usr/share/dict/words")
+    # dictionaryList = allWordleWords + falseWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
