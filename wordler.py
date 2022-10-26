@@ -1,7 +1,8 @@
+from re import L
 import nltk.corpus
 from allWords import allWordleWords, falseWords
 
-numLetters = 8
+numLetters = 5
 
 def readSysWord(systemFile):
     '''
@@ -115,10 +116,40 @@ def countLetters(dictionaryList, alphabet):
     for i in range(len(alphabet)):
         print(f"{alphabet[i]}: {countList[i]}")
 
+def rateWords(possibleWords, dictionaryList, knownLetters, notPresent):
+    scoreDict = {}
+    letterScores = {}
+    for word in possibleWords:
+        for letter in word:
+            if letter in letterScores.keys():
+                letterScores[letter] +=1
+            else:
+                letterScores[letter] = 1
+    maxAppearanceNum = letterScores[max(letterScores, key=lambda key: letterScores[key])]
+    print(letterScores)
+    
+    for word in dictionaryList:
+        score = 0.0
+        for letter in word:
+            #bad if word is already known
+            score = score-0.5 if letter in knownLetters else score
+            #bad if words is known to be not present already
+            score = score-1 if letter in notPresent else score
+            #bad if there are many repeats in word
+            score -= word.count(letter)
+            #good if letter appears a lot in possible words
+            if letter not in knownLetters and letter in letterScores.keys():
+                score += letterScores[letter]*3/maxAppearanceNum
+        scoreDict[word] = score
+    
+    return scoreDict
+
+
+
 def main():
 
-    dictionaryList = readSysWord("/usr/share/dict/words")
-    # dictionaryList = allWordleWords + falseWords
+    # dictionaryList = readSysWord("/usr/share/dict/words")
+    dictionaryList = allWordleWords + falseWords
 
     #for knownSpotsT, put number and letter for letters you know
     #for knownSpotsF, put number and leter of letter you know isn't there
@@ -129,23 +160,28 @@ def main():
 
     while True:
         print("\nInstructions: enter given information with designation first followed by letter")
-        print("Enter 'stern' for your first word, and 'yclad' for the second")
+        # print("Enter 'stern' for your first word, and 'yclad' for the second")
         print("f for grey, y for yellow, g for green")
 
         result = getResult()
         parseResults(result, knownSpotsT, knownSpotsF, knownLetters, notPresent)
 
-        print("\nData in case the code crashes:")
-        print(knownSpotsT, knownSpotsF, knownLetters, notPresent)
+        # print("\nData in case the code crashes:")
+        # print(knownSpotsT, knownSpotsF, knownLetters, notPresent)
 
-        possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, dictionaryList)
+        possibleWords = findPossibilities(knownSpotsT, knownSpotsF, knownLetters, notPresent, allWordleWords)
         print(f"\nPossible words:\n{possibleWords}")
 
-        freqs = nltk.FreqDist([w.lower() for w in nltk.corpus.brown.words()])
-        wordlist_sorted = sorted(possibleWords, key=lambda x: freqs[x.lower()], reverse=True)
+        # freqs = nltk.FreqDist([w.lower() for w in nltk.corpus.brown.words()])
+        # wordlist_sorted = sorted(possibleWords, key=lambda x: freqs[x.lower()], reverse=True)
 
-        print(f"\nPossible words sorted by popularity:\n{wordlist_sorted[:10]}")
+        # print(f"\nPossible words sorted by popularity:\n{wordlist_sorted[:10]}")
 
+        scoreDict = rateWords(possibleWords, dictionaryList, knownLetters, notPresent)
+        # print(scoreDict)
+        bestForRemove = sorted(dictionaryList, key=lambda x: scoreDict[x], reverse=True)
+
+        print(f"\nbest words for narrowing options: {bestForRemove[:10]}")
 
         wait = input("\nPress enter to continue")
 
